@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "coppergear:block/copper_gear",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "coppergear:block/copper_gear"
+    },
+    "facing=south": {
+      "model": "coppergear:block/copper_gear",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "coppergear:block/copper_gear",
+      "y": 270
+    }
+  }
+}
