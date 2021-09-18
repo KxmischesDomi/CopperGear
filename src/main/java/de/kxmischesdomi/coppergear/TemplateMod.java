@@ -1,6 +1,6 @@
-package de.kxmischesdomi.template;
+package de.kxmischesdomi.coppergear;
 
-import de.kxmischesdomi.template.common.registry.ModItems;
+import de.kxmischesdomi.coppergear.common.registry.ModItems;
 import net.fabricmc.api.ModInitializer;
 
 public class TemplateMod implements ModInitializer {

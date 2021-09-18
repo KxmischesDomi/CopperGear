@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "CopperGear",
-  "description": "More Coppergear",
+  "description": "Coppergear.",
   "authors": [
     "KxmischesDomi"
   ],
@@ -14,19 +14,19 @@
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/template/icon.png",
+  "icon": "assets/coppergear/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "de.kxmischesdomi.template.TemplateMod"
+      "de.kxmischesdomi.coppergear.TemplateMod"
     ],
     "client": [
-      "de.kxmischesdomi.template.TemplateModClient"
+      "de.kxmischesdomi.coppergear.TemplateModClient"
     ]
   },
   "mixins": [
-    "template.mixins.json"
+    "coppergear.mixins.json"
   ],
 
   "depends": {

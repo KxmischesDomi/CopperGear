@@ -1,10 +1,11 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "de.kxmischesdomi.template.mixin",
+  "package": "de.kxmischesdomi.coppergear.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-
+    "AxeItemMixin",
+    "HoneycombItemMixin"
   ],
   "client": [
   ],

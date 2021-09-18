@@ -1,6 +1,6 @@
-package de.kxmischesdomi.template;
+package de.kxmischesdomi.coppergear;
 
-import de.kxmischesdomi.template.common.registry.ModBlocks;
+import de.kxmischesdomi.coppergear.common.registry.ModBlocks;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

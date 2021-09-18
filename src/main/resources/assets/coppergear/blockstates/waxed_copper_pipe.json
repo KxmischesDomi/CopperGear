@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "bottom=false,top=false": {
+      "model": "coppergear:block/copper_pipe_both"
+    },
+    "bottom=true,top=false": {
+      "model": "coppergear:block/copper_pipe_top"
+    },
+    "bottom=false,top=true": {
+      "model": "coppergear:block/copper_pipe_bottom"
+    },
+    "bottom=true,top=true": {
+      "model": "coppergear:block/copper_pipe_center"
+    }
+  }
+}

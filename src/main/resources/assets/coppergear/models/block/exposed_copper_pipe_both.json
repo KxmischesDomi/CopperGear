@@ -1,0 +1,12 @@
+{
+  "parent": "coppergear:block/copper_pipe_both",
+  "textures": {
+    "pipe": "coppergear:block/exposed_copper_pipe",
+    "centeroutput": "coppergear:block/exposed_copper_pipe_centeroutput",
+    "output": "coppergear:block/exposed_copper_pipe_output",
+    "center": "coppergear:block/exposed_copper_pipe_center",
+    "topside": "coppergear:block/exposed_copper_pipe_topside",
+    "bottomside": "coppergear:block/exposed_copper_pipe_bottomside",
+    "particle": "coppergear:block/exposed_copper_pipe"
+  }
+}

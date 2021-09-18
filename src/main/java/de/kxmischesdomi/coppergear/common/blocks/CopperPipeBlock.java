@@ -1,6 +1,5 @@
-package de.kxmischesdomi.template.common.blocks;
+package de.kxmischesdomi.coppergear.common.blocks;
 
-import de.kxmischesdomi.template.common.registry.ModBlocks;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.ChestBlockEntity;
@@ -34,7 +33,7 @@ import java.util.stream.IntStream;
  * @author KxmischesDomi | https://github.com/kxmischesdomi
  * @since 1.0
  */
-public class CopperPipeBlock extends Block {
+public class CopperPipeBlock extends Block implements CopperGearOxidizable {
 
 	public static final BooleanProperty BOTTOM;
 	public static final BooleanProperty TOP;
@@ -44,13 +43,31 @@ public class CopperPipeBlock extends Block {
 	public static final VoxelShape TOP_SHAPE;
 	public static final VoxelShape BOTTOM_SHAPE;
 
-	public CopperPipeBlock(Settings settings) {
+	private final Oxidizable.OxidizationLevel oxidizationLevel;
+
+	public CopperPipeBlock(Oxidizable.OxidizationLevel oxidizationLevel, Settings settings) {
 		super(settings);
+		this.oxidizationLevel = oxidizationLevel;
 		this.setDefaultState((this.stateManager.getDefaultState()).with(BOTTOM, false).with(TOP, false).with(ENABLED, true));
 	}
 
 	@Override
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+		if (oxidizationLevel != null) this.tickDegradation(state, world, pos, random);
+		super.randomTick(state, world, pos, random);
+	}
+
+	public boolean hasRandomTicks(BlockState state) {
+		return CopperGearOxidizable.getIncreasedOxidationBlock(state.getBlock()).isPresent();
+	}
+
+	public Oxidizable.OxidizationLevel getDegradationLevel() {
+		return this.oxidizationLevel;
+	}
+
+	@Override
 	public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+		this.updateState(world, pos, state);
 		world.getBlockTickScheduler().schedule(pos, this, 8);
 	}
 
@@ -97,7 +114,7 @@ public class CopperPipeBlock extends Block {
 
 		if (outputInventory != null) {
 			HopperBlockEntity.transfer(inputInventory, outputInventory, inputInventory.removeStack(slot, 1), Direction.DOWN);
-		} else if (world.getBlockState(pos).isOf(ModBlocks.COPPER_PIPE)) {
+		} else if (world.getBlockState(pos).getBlock() instanceof CopperPipeBlock) {
 			transferItem(world, pos.up(), inputInventory, slot, stack);
 		} else {
 //			stack.decrement(1);
@@ -130,12 +147,12 @@ public class CopperPipeBlock extends Block {
 
 	private BlockState getState(World world, BlockPos pos, BlockState state) {
 		BlockState state1 = state;
-		if (world.getBlockState(pos.up()).isOf(ModBlocks.COPPER_PIPE)) {
+		if (world.getBlockState(pos.up()).getBlock() instanceof CopperPipeBlock) {
 			state1 = state1.with(TOP, true);
 		} else {
 			state1 = state1.with(TOP, false);
 		}
-		if (world.getBlockState(pos.down()).isOf(ModBlocks.COPPER_PIPE)) {
+		if (world.getBlockState(pos.down()).getBlock() instanceof CopperPipeBlock) {
 			state1 = state1.with(BOTTOM, true);
 		} else {
 			state1 = state1.with(BOTTOM, false);

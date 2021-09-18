@@ -1,22 +1,22 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"1": "coppergear:block/copper_pipe_centeroutput",
-		"2": "coppergear:block/copper_pipe_output",
-		"3": "coppergear:block/copper_pipe_center",
-		"particle": "coppergear:block/copper_pipe_center"
+		"centeroutput": "coppergear:block/copper_pipe_centeroutput",
+		"output": "coppergear:block/copper_pipe_output",
+		"center": "coppergear:block/copper_pipe_center",
+		"particle": "coppergear:block/copper_pipe"
 	},
 	"elements": [
 		{
 			"from": [2, 0, 2],
 			"to": [14, 16, 14],
 			"faces": {
-				"north": {"uv": [2, 0, 14, 16], "texture": "#3"},
-				"east": {"uv": [2, 0, 14, 16], "texture": "#3"},
-				"south": {"uv": [2, 0, 14, 16], "texture": "#3"},
-				"west": {"uv": [2, 0, 14, 16], "texture": "#3"},
-				"up": {"uv": [2, 2, 14, 14], "texture": "#1"},
-				"down": {"uv": [2, 2, 14, 14], "texture": "#2"}
+				"north": {"uv": [2, 0, 14, 16], "texture": "#center"},
+				"east": {"uv": [2, 0, 14, 16], "texture": "#center"},
+				"south": {"uv": [2, 0, 14, 16], "texture": "#center"},
+				"west": {"uv": [2, 0, 14, 16], "texture": "#center"},
+				"up": {"uv": [2, 2, 14, 14], "texture": "#centeroutput"},
+				"down": {"uv": [2, 2, 14, 14], "texture": "#output"}
 			}
 		}
 	],

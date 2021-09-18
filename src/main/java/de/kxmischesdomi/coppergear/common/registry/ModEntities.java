@@ -1,6 +1,6 @@
-package de.kxmischesdomi.template.common.registry;
+package de.kxmischesdomi.coppergear.common.registry;
 
-import de.kxmischesdomi.template.TemplateMod;
+import de.kxmischesdomi.coppergear.TemplateMod;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -12,7 +12,6 @@ import net.minecraft.util.registry.Registry;
  * @since 1.0
  */
 public class ModEntities {
-
 
 	private static <T extends Entity> EntityType<T> register(String id, FabricEntityTypeBuilder<T> builder) {
 		return Registry.register(Registry.ENTITY_TYPE, new Identifier(TemplateMod.MOD_ID, id), builder.build());
