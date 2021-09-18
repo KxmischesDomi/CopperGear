@@ -7,8 +7,11 @@ import de.kxmischesdomi.coppergear.common.registry.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Oxidizable;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.Optional;
+import java.util.Random;
 import java.util.function.Supplier;
 
 /**
@@ -63,11 +66,20 @@ public interface CopperGearOxidizable extends Oxidizable {
 		return getUnaffectedOxidationBlock(state.getBlock()).getStateWithProperties(state);
 	}
 
+	@Override
+	default void tickDegradation(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+		if (!isWaxed()) {
+			Oxidizable.super.tickDegradation(state, world, pos, random);
+		}
+	}
+
 	default Optional<BlockState> getDegradationResult(BlockState state) {
 		return getIncreasedOxidationBlock(state.getBlock()).map((block) -> {
 			return block.getStateWithProperties(state);
 		});
 	}
+
+	boolean isWaxed();
 
 
 }

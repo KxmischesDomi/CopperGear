@@ -44,16 +44,18 @@ public class CopperPipeBlock extends Block implements CopperGearOxidizable {
 	public static final VoxelShape BOTTOM_SHAPE;
 
 	private final Oxidizable.OxidizationLevel oxidizationLevel;
+	private final boolean waxed;
 
-	public CopperPipeBlock(Oxidizable.OxidizationLevel oxidizationLevel, Settings settings) {
+	public CopperPipeBlock(Oxidizable.OxidizationLevel oxidizationLevel, boolean waxed, Settings settings) {
 		super(settings);
+		this.waxed = waxed;
 		this.oxidizationLevel = oxidizationLevel;
 		this.setDefaultState((this.stateManager.getDefaultState()).with(BOTTOM, false).with(TOP, false).with(ENABLED, true));
 	}
 
 	@Override
 	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		if (oxidizationLevel != null) this.tickDegradation(state, world, pos, random);
+		this.tickDegradation(state, world, pos, random);
 		super.randomTick(state, world, pos, random);
 	}
 
@@ -63,6 +65,11 @@ public class CopperPipeBlock extends Block implements CopperGearOxidizable {
 
 	public Oxidizable.OxidizationLevel getDegradationLevel() {
 		return this.oxidizationLevel;
+	}
+
+	@Override
+	public boolean isWaxed() {
+		return waxed;
 	}
 
 	@Override
