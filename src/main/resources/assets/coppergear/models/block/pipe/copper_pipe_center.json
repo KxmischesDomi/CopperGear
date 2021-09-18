@@ -1,13 +1,13 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"pipe": "coppergear:block/copper_pipe",
-		"centeroutput": "coppergear:block/copper_pipe_centeroutput",
-		"output": "coppergear:block/copper_pipe_output",
-		"center": "coppergear:block/copper_pipe_center",
-		"topside": "coppergear:block/copper_pipe_topside",
-		"bottomside": "coppergear:block/copper_pipe_bottomside",
-		"particle": "coppergear:block/copper_pipe"
+		"pipe": "coppergear:block/pipe/copper_pipe",
+		"centeroutput": "coppergear:block/pipe/copper_pipe_centeroutput",
+		"output": "coppergear:block/pipe/copper_pipe_output",
+		"center": "coppergear:block/pipe/copper_pipe_center",
+		"topside": "coppergear:block/pipe/copper_pipe_topside",
+		"bottomside": "coppergear:block/pipe/copper_pipe_bottomside",
+		"particle": "coppergear:block/pipe/copper_pipe"
 	},
 	"elements": [
 		{
