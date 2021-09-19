@@ -60,6 +60,9 @@ public class CopperGearBlock extends Block {
 
 	@Override
 	public int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
+
+		System.out.println(world.getClass());
+
 		return state.get(POWER) - 1;
 	}
 
@@ -73,10 +76,9 @@ public class CopperGearBlock extends Block {
 		int receiving = world.getReceivedRedstonePower(pos);
 		Direction direction = Direction.fromVector(fromPos.subtract(pos));
 		int emitted = world.getEmittedRedstonePower(fromPos, direction);
-		System.out.println(emitted + " :: " + receiving + " :: " + direction);
-		if (state.get(POWER) != receiving || (receiving > 0 && receiving > emitted)) {
+//		if (state.get(POWER) != receiving || (receiving > 0 && receiving > emitted)) {
 			world.setBlockState(pos, state.with(POWER, receiving), NOTIFY_NEIGHBORS);
-		}
+//		}
 
 	}
 

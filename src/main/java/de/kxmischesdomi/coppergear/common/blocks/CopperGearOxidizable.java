@@ -22,9 +22,15 @@ public interface CopperGearOxidizable extends Oxidizable {
 
 	Supplier<BiMap<Block, Block>> OXIDATION_LEVEL_INCREASES = Suppliers.memoize(() -> {
 		return ImmutableBiMap.<Block, Block>builder()
+
 				.put(ModBlocks.COPPER_PIPE, ModBlocks.EXPOSED_COPPER_PIPE)
 				.put(ModBlocks.EXPOSED_COPPER_PIPE, ModBlocks.WEATHERED_COPPER_PIPE)
 				.put(ModBlocks.WEATHERED_COPPER_PIPE, ModBlocks.OXIDIZED_COPPER_PIPE)
+
+				.put(ModBlocks.COPPER_VACUUM, ModBlocks.EXPOSED_COPPER_VACUUM)
+				.put(ModBlocks.EXPOSED_COPPER_VACUUM, ModBlocks.WEATHERED_COPPER_VACUUM)
+				.put(ModBlocks.WEATHERED_COPPER_VACUUM, ModBlocks.OXIDIZED_COPPER_VACUUM)
+
 				.build();
 	});
 	Supplier<BiMap<Block, Block>> OXIDATION_LEVEL_DECREASES = Suppliers.memoize(() -> {
@@ -32,7 +38,18 @@ public interface CopperGearOxidizable extends Oxidizable {
 	});
 
 	Supplier<BiMap<Block, Block>> UNWAXED_TO_WAXED_BLOCKS = Suppliers.memoize(() -> {
-		return ImmutableBiMap.<Block, Block>builder().put(ModBlocks.COPPER_PIPE, ModBlocks.WAXED_COPPER_PIPE).put(ModBlocks.EXPOSED_COPPER_PIPE, ModBlocks.WAXED_EXPOSED_COPPER_PIPE).put(ModBlocks.WEATHERED_COPPER_PIPE, ModBlocks.WAXED_WEATHERED_COPPER_PIPE).put(ModBlocks.OXIDIZED_COPPER_PIPE, ModBlocks.WAXED_OXIDIZED_COPPER_PIPE).build();
+		return ImmutableBiMap.<Block, Block>builder()
+
+				.put(ModBlocks.COPPER_PIPE, ModBlocks.WAXED_COPPER_PIPE)
+				.put(ModBlocks.EXPOSED_COPPER_PIPE, ModBlocks.WAXED_EXPOSED_COPPER_PIPE)
+				.put(ModBlocks.WEATHERED_COPPER_PIPE, ModBlocks.WAXED_WEATHERED_COPPER_PIPE)
+				.put(ModBlocks.OXIDIZED_COPPER_PIPE, ModBlocks.WAXED_OXIDIZED_COPPER_PIPE)
+
+				.put(ModBlocks.COPPER_VACUUM, ModBlocks.WAXED_COPPER_VACUUM)
+				.put(ModBlocks.EXPOSED_COPPER_VACUUM, ModBlocks.WAXED_EXPOSED_COPPER_VACUUM)
+				.put(ModBlocks.WEATHERED_COPPER_VACUUM, ModBlocks.WAXED_WEATHERED_COPPER_VACUUM)
+				.put(ModBlocks.OXIDIZED_COPPER_VACUUM, ModBlocks.WAXED_OXIDIZED_COPPER_VACUUM)
+				.build();
 	});
 	Supplier<BiMap<Block, Block>> WAXED_TO_UNWAXED_BLOCKS = Suppliers.memoize(() -> {
 		return ((BiMap)UNWAXED_TO_WAXED_BLOCKS.get()).inverse();

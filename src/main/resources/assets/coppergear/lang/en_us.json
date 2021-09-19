@@ -1,5 +1,12 @@
 {
+
+  "itemGroup.coppergear.items": "Copper Gear",
+
   "item.coppergear.copper_gear": "Copper Gear",
+
+  "block.coppergear.copper_gear": "Copper Gear",
+
+
   "item.coppergear.copper_pipe": "Copper Pipe",
   "item.coppergear.exposed_copper_pipe": "Exposed Copper Pipe",
   "item.coppergear.weathered_copper_pipe": "Weathered Copper Pipe",
@@ -9,7 +16,6 @@
   "item.coppergear.waxed_weathered_copper_pipe": "Waxed Weathered Copper Pipe",
   "item.coppergear.waxed_oxidized_copper_pipe": "Waxed Oxidized Copper Pipe",
 
-  "block.coppergear.copper_gear": "Copper Gear",
   "block.coppergear.copper_pipe": "Copper Pipe",
   "block.coppergear.exposed_copper_pipe": "Exposed Copper Pipe",
   "block.coppergear.weathered_copper_pipe": "Weathered Copper Pipe",
@@ -17,5 +23,25 @@
   "block.coppergear.waxed_copper_pipe": "Waxed Copper Pipe",
   "block.coppergear.waxed_exposed_copper_pipe": "Waxed Exposed Copper Pipe",
   "block.coppergear.waxed_weathered_copper_pipe": "Waxed Weathered Copper Pipe",
-  "block.coppergear.waxed_oxidized_copper_pipe": "Waxed Oxidized Copper Pipe"
+  "block.coppergear.waxed_oxidized_copper_pipe": "Waxed Oxidized Copper Pipe",
+
+  
+  "item.coppergear.copper_vacuum": "Copper Vacuum",
+  "item.coppergear.exposed_copper_vacuum": "Exposed Copper Vacuum",
+  "item.coppergear.weathered_copper_vacuum": "Weathered Copper Vacuum",
+  "item.coppergear.oxidized_copper_vacuum": "Oxidized Copper Vacuum",
+  "item.coppergear.waxed_copper_vacuum": "Waxed Copper Vacuum",
+  "item.coppergear.waxed_exposed_copper_vacuum": "Waxed Exposed Copper Vacuum",
+  "item.coppergear.waxed_weathered_copper_vacuum": "Waxed Weathered Copper Vacuum",
+  "item.coppergear.waxed_oxidized_copper_vacuum": "Waxed Oxidized Copper Vacuum",
+
+  "block.coppergear.copper_vacuum": "Copper Vacuum",
+  "block.coppergear.exposed_copper_vacuum": "Exposed Copper Vacuum",
+  "block.coppergear.weathered_copper_vacuum": "Weathered Copper Vacuum",
+  "block.coppergear.oxidized_copper_vacuum": "Oxidized Copper Vacuum",
+  "block.coppergear.waxed_copper_vacuum": "Waxed Copper Vacuum",
+  "block.coppergear.waxed_exposed_copper_vacuum": "Waxed Exposed Copper Vacuum",
+  "block.coppergear.waxed_weathered_copper_vacuum": "Waxed Weathered Copper Vacuum",
+  "block.coppergear.waxed_oxidized_copper_vacuum": "Waxed Oxidized Copper Vacuum"
+  
 }

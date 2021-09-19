@@ -12,7 +12,7 @@ import net.minecraft.client.render.RenderLayer;
  * @since 1.0
  */
 @Environment(EnvType.CLIENT)
-public class TemplateModClient implements ClientModInitializer {
+public class CopperGearModClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {

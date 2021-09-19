@@ -25,10 +25,7 @@ public class HoneycombItemMixin {
 			return block.getStateWithProperties(state);
 		});
 		if (blockState.isPresent()) {
-			System.out.println("PRESENT : " + blockState);
 			cir.setReturnValue(blockState);
-		} else {
-			System.out.println("NOT PRESENT : " + blockState);
 		}
 
 	}

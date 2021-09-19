@@ -19,10 +19,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "de.kxmischesdomi.coppergear.TemplateMod"
+      "de.kxmischesdomi.coppergear.CopperGearMod"
     ],
     "client": [
-      "de.kxmischesdomi.coppergear.TemplateModClient"
+      "de.kxmischesdomi.coppergear.CopperGearModClient"
     ]
   },
   "mixins": [

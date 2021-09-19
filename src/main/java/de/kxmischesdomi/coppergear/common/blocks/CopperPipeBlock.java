@@ -27,13 +27,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Random;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 /**
  * @author KxmischesDomi | https://github.com/kxmischesdomi
  * @since 1.0
  */
-public class CopperPipeBlock extends Block implements CopperGearOxidizable {
+public class CopperPipeBlock extends Block implements CopperGearOxidizable, CopperPipeConnectable {
 
 	public static final BooleanProperty BOTTOM;
 	public static final BooleanProperty TOP;
@@ -74,7 +76,6 @@ public class CopperPipeBlock extends Block implements CopperGearOxidizable {
 
 	@Override
 	public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-		this.updateState(world, pos, state);
 		world.getBlockTickScheduler().schedule(pos, this, 8);
 	}
 
@@ -82,7 +83,7 @@ public class CopperPipeBlock extends Block implements CopperGearOxidizable {
 	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		world.getBlockTickScheduler().schedule(pos, this, 8);
 
-		if (!state.get(ENABLED)) {
+		if (!state.get(ENABLED) && state.get(BOTTOM)) {
 			return;
 		}
 
@@ -90,45 +91,20 @@ public class CopperPipeBlock extends Block implements CopperGearOxidizable {
 
 		if (inputInventory != null) {
 			if (!isInventoryEmpty(inputInventory, Direction.UP)) {
-//				Inventory outputInventory = getOutputInventory(world, pos);
-//				if ((outputInventory != null && !isInventoryFull(outputInventory, Direction.DOWN)) || world.getBlockState(pos.up()).isOf(ModBlocks.COPPER_PIPE)) {
 
-					ItemStack stack = ItemStack.EMPTY;
 					int slot = -1;
 					for (int i : getAvailableSlots(inputInventory, Direction.DOWN).toArray()) {
 						ItemStack itemStack = inputInventory.getStack(i);
 						if (!itemStack.isEmpty()) {
-							stack = itemStack;
 							slot = i;
 							break;
 						}
 
 					}
 
-					if (!stack.isEmpty()) {
-						transferItem(world, pos, inputInventory, slot, stack);
-					}
-
-//				}
+					transportItemFromInventory(world, pos, inputInventory, slot, itemStack -> {});
 
 			}
-		}
-
-	}
-
-	public void transferItem(World world, BlockPos pos, Inventory inputInventory, int slot, ItemStack stack) {
-		Inventory outputInventory = getOutputInventory(world, pos);
-
-		if (outputInventory != null) {
-			HopperBlockEntity.transfer(inputInventory, outputInventory, inputInventory.removeStack(slot, 1), Direction.DOWN);
-		} else if (world.getBlockState(pos).getBlock() instanceof CopperPipeBlock) {
-			transferItem(world, pos.up(), inputInventory, slot, stack);
-		} else {
-//			stack.decrement(1);
-//			ItemStack copy = stack.copy();
-//			copy.setCount(1);
-//			ItemEntity itemEntity = new ItemEntity(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, copy);
-//			world.spawnEntity(itemEntity);
 		}
 
 	}
@@ -154,12 +130,15 @@ public class CopperPipeBlock extends Block implements CopperGearOxidizable {
 
 	private BlockState getState(World world, BlockPos pos, BlockState state) {
 		BlockState state1 = state;
-		if (world.getBlockState(pos.up()).getBlock() instanceof CopperPipeBlock) {
+
+		Block topBlock = world.getBlockState(pos.up()).getBlock();
+		if (topBlock instanceof CopperPipeConnectable && ((CopperPipeConnectable) topBlock).canConnectBottom()) {
 			state1 = state1.with(TOP, true);
 		} else {
 			state1 = state1.with(TOP, false);
 		}
-		if (world.getBlockState(pos.down()).getBlock() instanceof CopperPipeBlock) {
+		Block bottomBlock = world.getBlockState(pos.down()).getBlock();
+		if (bottomBlock instanceof CopperPipeConnectable && ((CopperPipeConnectable) bottomBlock).canConnectTop()) {
 			state1 = state1.with(BOTTOM, true);
 		} else {
 			state1 = state1.with(BOTTOM, false);
@@ -199,19 +178,6 @@ public class CopperPipeBlock extends Block implements CopperGearOxidizable {
 				return BOTH_SHAPE;
 			}
 		}
-	}
-
-	private static boolean canInsert(Inventory inventory, ItemStack stack, int slot, @Nullable Direction side) {
-		if (!inventory.isValid(slot, stack)) {
-			return false;
-		} else {
-			return !(inventory instanceof SidedInventory) || ((SidedInventory)inventory).canInsert(slot, stack, side);
-		}
-	}
-
-	@Nullable
-	private static Inventory getOutputInventory(World world, BlockPos pos) {
-		return getInventoryAt(world, pos.up());
 	}
 
 	@Nullable
@@ -267,6 +233,56 @@ public class CopperPipeBlock extends Block implements CopperGearOxidizable {
 		return getAvailableSlots(inv, facing).allMatch((i) -> {
 			return inv.getStack(i).isEmpty();
 		});
+	}
+
+	public static void transportItemFromInventory(World world, BlockPos pos, Inventory inputInventory, int slot, Consumer<ItemStack> result) {
+
+		transportItem(world, pos.up(), inputInventory.getStack(slot), (out, inventory) -> {
+
+			if (inventory != null) {
+				result.accept(HopperBlockEntity.transfer(inputInventory, inventory, inputInventory.removeStack(slot, 1), Direction.DOWN));
+			}
+
+		});
+
+	}
+
+	public static void transportItem(World world, BlockPos pos, ItemStack itemStack, Consumer<ItemStack> result) {
+
+		transportItem(world, pos.up(), itemStack, (out, inventory) -> {
+
+			System.out.println(inventory);
+			if (inventory != null) {
+				result.accept(HopperBlockEntity.transfer(null, inventory, itemStack, Direction.DOWN));
+			}
+
+		});
+
+	}
+
+	public static void transportItem(World world, BlockPos pos, ItemStack itemStack, BiConsumer<BlockPos, Inventory> pipeOutput) {
+		BlockState state = world.getBlockState(pos);
+		Block block = state.getBlock();
+		if (block instanceof CopperPipeConnectable && ((CopperPipeConnectable) block).canConnectBottom()) {
+			if (state.getEntries().containsKey(Properties.ENABLED) && !state.get(Properties.ENABLED)) {
+				return;
+			}
+
+			if (((CopperPipeConnectable) block).isEnabled(world, pos, state)) {
+				if (((CopperPipeConnectable) block).onItemPass(world, pos, state, itemStack)) {
+					transportItem(world, pos.up(), itemStack, pipeOutput);
+				}
+			}
+		} else {
+			Inventory outputInventory = getInventoryAt(world, pos);
+			System.out.println(world.getBlockState(pos));
+
+			if (outputInventory != null) {
+				pipeOutput.accept(pos, outputInventory);
+			}
+
+		}
+
 	}
 
 	static {

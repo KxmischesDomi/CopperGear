@@ -1,0 +1,9 @@
+{
+  "parent": "coppergear:block/vacuum/copper_vacuum",
+  "textures": {
+    "bottom": "coppergear:block/vacuum/weathered_copper_vacuum_bottom",
+    "side": "coppergear:block/vacuum/weathered_copper_vacuum_side",
+    "centeroutput": "coppergear:block/pipe/weathered_copper_pipe_centeroutput",
+    "particle": "coppergear:block/vacuum/weathered_copper_vacuum_bottom"
+  }
+}

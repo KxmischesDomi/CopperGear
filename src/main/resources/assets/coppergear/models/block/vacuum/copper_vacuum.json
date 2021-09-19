@@ -1,0 +1,55 @@
+{
+  "credit": "Made with Blockbench",
+  "textures": {
+    "bottom": "coppergear:block/vacuum/copper_vacuum_bottom",
+    "side": "coppergear:block/vacuum/copper_vacuum_side",
+    "centeroutput": "coppergear:block/pipe/copper_pipe_centeroutput",
+    "particle": "coppergear:block/vacuum/copper_vacuum_bottom"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 6, 16],
+      "faces": {
+        "north": {"uv": [0, 10, 16, 16], "texture": "#side"},
+        "east": {"uv": [0, 10, 16, 16], "texture": "#side"},
+        "south": {"uv": [0, 10, 16, 16], "texture": "#side"},
+        "west": {"uv": [0, 10, 16, 16], "texture": "#side"},
+        "up": {"uv": [0, 0, 16, 16], "texture": "#bottom"},
+        "down": {"uv": [0, 0, 16, 16], "rotation": 270, "texture": "#bottom"}
+      }
+    },
+    {
+      "from": [1, 6, 1],
+      "to": [15, 12, 15],
+      "faces": {
+        "north": {"uv": [1, 4, 15, 10], "texture": "#side"},
+        "east": {"uv": [1, 4, 15, 10], "texture": "#side"},
+        "south": {"uv": [1, 4, 15, 10], "texture": "#side"},
+        "west": {"uv": [1, 4, 15, 10], "texture": "#side"},
+        "up": {"uv": [1, 1, 15, 15], "texture": "#bottom"},
+        "down": {"uv": [0, 0, 14, 14], "texture": "#side"}
+      }
+    },
+    {
+      "from": [2, 12, 2],
+      "to": [14, 16, 14],
+      "faces": {
+        "north": {"uv": [2, 0, 14, 4], "texture": "#side"},
+        "east": {"uv": [2, 0, 14, 4], "texture": "#side"},
+        "south": {"uv": [2, 0, 14, 4], "texture": "#side"},
+        "west": {"uv": [2, 0, 14, 4], "texture": "#side"},
+        "up": {"uv": [2, 2, 14, 14], "texture": "#centeroutput"},
+        "down": {"uv": [0, 0, 14, 14], "texture": "#side"}
+      }
+    }
+  ],
+  "groups": [
+    {
+      "name": "group",
+      "origin": [8, 8, 8],
+      "color": 0,
+      "children": [0, 1, 2]
+    }
+  ]
+}

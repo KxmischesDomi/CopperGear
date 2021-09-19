@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "coppergear:block/vacuum/exposed_copper_vacuum"
+    }
+  }
+}
