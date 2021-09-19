@@ -60,9 +60,6 @@ public class CopperGearBlock extends Block {
 
 	@Override
 	public int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
-
-		System.out.println(world.getClass());
-
 		return state.get(POWER) - 1;
 	}
 

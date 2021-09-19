@@ -251,7 +251,6 @@ public class CopperPipeBlock extends Block implements CopperGearOxidizable, Copp
 
 		transportItem(world, pos.up(), itemStack, (out, inventory) -> {
 
-			System.out.println(inventory);
 			if (inventory != null) {
 				result.accept(HopperBlockEntity.transfer(null, inventory, itemStack, Direction.DOWN));
 			}
@@ -275,7 +274,6 @@ public class CopperPipeBlock extends Block implements CopperGearOxidizable, Copp
 			}
 		} else {
 			Inventory outputInventory = getInventoryAt(world, pos);
-			System.out.println(world.getBlockState(pos));
 
 			if (outputInventory != null) {
 				pipeOutput.accept(pos, outputInventory);
