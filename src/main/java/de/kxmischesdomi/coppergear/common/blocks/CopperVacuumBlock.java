@@ -3,14 +3,14 @@ package de.kxmischesdomi.coppergear.common.blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
@@ -20,7 +20,6 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Random;
@@ -58,15 +57,24 @@ public class CopperVacuumBlock extends Block implements CopperGearOxidizable, Co
 
 		List<ItemEntity> entitiesInPullRange = world.getEntitiesByType(EntityType.ITEM, new Box(pos.getX() + 1, pos.getY(), pos.getZ() + 1, pos.getX(), pos.getY() - 0.5, pos.getZ()), itemEntity -> true);
 		for (ItemEntity itemEntity : entitiesInPullRange) {
-			CopperPipeBlock.transportItem(world, pos, itemEntity.getStack(), itemEntity::setStack);
+			CopperPipeBlock.transportItem(world, pos, itemEntity.getStack(), itemStack -> {
+				itemEntity.setStack(itemStack);
+			});
 		}
 
-		List<ItemEntity> entitiesInVelocityRange = world.getEntitiesByType(EntityType.ITEM, new Box(pos.getX() + 1, pos.getY(), pos.getZ() + 1, pos.getX(), pos.getY() - 3, pos.getZ()), itemEntity -> true);
-		for (ItemEntity itemEntity : entitiesInVelocityRange) {
-			itemEntity.addVelocity(0, 0.5, 0);
-		}
+		for (int i = 0; i < 3; i++) {
+			BlockPos pos1 = pos.down(i+1);
+			BlockState blockState = world.getBlockState(pos1);
+			if (!blockState.getBlock().getCollisionShape(blockState, world, pos1, null).isEmpty()) {
+				break;
+			}
 
-	}
+			List<ItemEntity> entitiesInVelocityRange = world.getEntitiesByType(EntityType.ITEM, new Box(pos.getX() + 1, pos.getY() - i, pos.getZ() + 1, pos.getX(), pos.getY() - i - 1, pos.getZ()), itemEntity -> true);
+			for (ItemEntity itemEntity : entitiesInVelocityRange) {
+				itemEntity.addVelocity(0, 0.5, 0);
+			}
+
+		}
 
 	@Override
 	public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
@@ -100,10 +108,6 @@ public class CopperVacuumBlock extends Block implements CopperGearOxidizable, Co
 		}
 
 		return state;
-	}
-
-	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-
 	}
 
 	@Override
