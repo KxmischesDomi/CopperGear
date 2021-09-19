@@ -288,10 +288,10 @@ public class CopperPipeBlock extends Block implements CopperGearOxidizable, Copp
 		TOP = BooleanProperty.of("top");
 		ENABLED = Properties.ENABLED;
 
-		VoxelShape bottomPiece = VoxelShapes.cuboid(0, 0, 0, 1, 0.1875, 1);
-		VoxelShape topPiece = VoxelShapes.cuboid(0, 0.8125, 0, 1, 1, 1);
+		VoxelShape bottomPiece = Block.createCuboidShape(0, 0, 0, 16, 3, 16);
+		VoxelShape topPiece = Block.createCuboidShape(0, 13, 0, 16, 16, 16);
 
-		NONE_SHAPE = VoxelShapes.cuboid(0.125, 0, 0.125, 0.875, 1, 0.875);
+		NONE_SHAPE = Block.createCuboidShape(2, 0, 2, 14, 16, 14);
 		BOTH_SHAPE = VoxelShapes.union(NONE_SHAPE, bottomPiece, topPiece);
 		BOTTOM_SHAPE = VoxelShapes.union(NONE_SHAPE, bottomPiece);
 		TOP_SHAPE = VoxelShapes.union(NONE_SHAPE, topPiece);

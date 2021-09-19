@@ -147,12 +147,9 @@ public class CopperVacuumBlock extends Block implements CopperGearOxidizable, Co
 
 	static {
 		ENABLED = Properties.ENABLED;
-
-		double pixelSize = 0.0625;
-		double bottomMiddleThickness = pixelSize * 6;
-		BOTTOM_SHAPE = VoxelShapes.cuboid(0, 0, 0, 1, bottomMiddleThickness, 1);
-		MIDDLE_SHAPE = VoxelShapes.cuboid(pixelSize, bottomMiddleThickness, pixelSize, 1 - pixelSize, bottomMiddleThickness * 2, 1 - pixelSize);
-		TOP_SHAPE = VoxelShapes.cuboid(pixelSize*2, bottomMiddleThickness*2, pixelSize*2, 1-pixelSize*2, bottomMiddleThickness*2+pixelSize*4, 1-pixelSize*2);
+		BOTTOM_SHAPE = Block.createCuboidShape(0, 0, 0, 16, 6, 16);
+		MIDDLE_SHAPE = Block.createCuboidShape(1, 6, 1, 15, 12, 15);
+		TOP_SHAPE = Block.createCuboidShape(2, 12, 2, 14, 16, 14);
 		COMBINED_SHAPE = VoxelShapes.union(TOP_SHAPE, BOTTOM_SHAPE, MIDDLE_SHAPE);
 	}
 
