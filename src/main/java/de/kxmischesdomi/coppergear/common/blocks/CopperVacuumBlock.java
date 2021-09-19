@@ -76,12 +76,10 @@ public class CopperVacuumBlock extends Block implements CopperGearOxidizable, Co
 
 		}
 
-	@Override
-	public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-		world.getBlockTickScheduler().schedule(pos, this, 2);
 	}
 
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+		world.getBlockTickScheduler().schedule(pos, this, 2);
 		if (!oldState.isOf(state.getBlock())) {
 			this.updateState(world, pos, state);
 		}

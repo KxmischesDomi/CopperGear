@@ -75,11 +75,6 @@ public class CopperPipeBlock extends Block implements CopperGearOxidizable, Copp
 	}
 
 	@Override
-	public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-		world.getBlockTickScheduler().schedule(pos, this, 8);
-	}
-
-	@Override
 	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		world.getBlockTickScheduler().schedule(pos, this, 8);
 
@@ -110,6 +105,7 @@ public class CopperPipeBlock extends Block implements CopperGearOxidizable, Copp
 	}
 
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+		world.getBlockTickScheduler().schedule(pos, this, 8);
 		if (!oldState.isOf(state.getBlock())) {
 			this.updateState(world, pos, state);
 		}
