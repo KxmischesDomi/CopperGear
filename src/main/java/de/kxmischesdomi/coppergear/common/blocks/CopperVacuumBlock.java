@@ -57,8 +57,12 @@ public class CopperVacuumBlock extends Block implements CopperGearOxidizable, Co
 
 		List<ItemEntity> entitiesInPullRange = world.getEntitiesByType(EntityType.ITEM, new Box(pos.getX() + 1, pos.getY(), pos.getZ() + 1, pos.getX(), pos.getY() - 0.5, pos.getZ()), itemEntity -> true);
 		for (ItemEntity itemEntity : entitiesInPullRange) {
+			ItemStack oldStack = itemEntity.getStack().copy();
 			CopperPipeBlock.transportItem(world, pos, itemEntity.getStack(), itemStack -> {
 				itemEntity.setStack(itemStack);
+				if (!oldStack.equals(itemStack)) {
+					world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.2F, (random.nextFloat() - random.nextFloat() * 0.2F + 1.0F) * 2.0F);
+				}
 			});
 		}
 
