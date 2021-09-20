@@ -69,13 +69,13 @@ public class CopperVacuumBlock extends Block implements CopperGearOxidizable, Co
 		for (int i = 0; i < 3; i++) {
 			BlockPos pos1 = pos.down(i+1);
 			BlockState blockState = world.getBlockState(pos1);
-			if (!blockState.getBlock().getCollisionShape(blockState, world, pos1, null).isEmpty()) {
+			if (blockState.getBlock().isShapeFullCube(blockState, world, pos)) {
 				break;
 			}
 
 			List<ItemEntity> entitiesInVelocityRange = world.getEntitiesByType(EntityType.ITEM, new Box(pos.getX() + 1, pos.getY() - i, pos.getZ() + 1, pos.getX(), pos.getY() - i - 1, pos.getZ()), itemEntity -> true);
 			for (ItemEntity itemEntity : entitiesInVelocityRange) {
-				itemEntity.addVelocity(0, 0.5, 0);
+				itemEntity.addVelocity(0, 0.1, 0);
 			}
 
 		}
