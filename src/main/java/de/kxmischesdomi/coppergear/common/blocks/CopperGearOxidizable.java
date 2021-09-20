@@ -31,6 +31,14 @@ public interface CopperGearOxidizable extends Oxidizable {
 				.put(ModBlocks.EXPOSED_COPPER_VACUUM, ModBlocks.WEATHERED_COPPER_VACUUM)
 				.put(ModBlocks.WEATHERED_COPPER_VACUUM, ModBlocks.OXIDIZED_COPPER_VACUUM)
 
+				.put(ModBlocks.COPPER_DOOR, ModBlocks.EXPOSED_COPPER_DOOR)
+				.put(ModBlocks.EXPOSED_COPPER_DOOR, ModBlocks.WEATHERED_COPPER_DOOR)
+				.put(ModBlocks.WEATHERED_COPPER_DOOR, ModBlocks.OXIDIZED_COPPER_DOOR)
+
+				.put(ModBlocks.COPPER_TRAPDOOR, ModBlocks.EXPOSED_COPPER_TRAPDOOR)
+				.put(ModBlocks.EXPOSED_COPPER_TRAPDOOR, ModBlocks.WEATHERED_COPPER_TRAPDOOR)
+				.put(ModBlocks.WEATHERED_COPPER_TRAPDOOR, ModBlocks.OXIDIZED_COPPER_TRAPDOOR)
+
 				.build();
 	});
 	Supplier<BiMap<Block, Block>> OXIDATION_LEVEL_DECREASES = Suppliers.memoize(() -> {
@@ -49,6 +57,17 @@ public interface CopperGearOxidizable extends Oxidizable {
 				.put(ModBlocks.EXPOSED_COPPER_VACUUM, ModBlocks.WAXED_EXPOSED_COPPER_VACUUM)
 				.put(ModBlocks.WEATHERED_COPPER_VACUUM, ModBlocks.WAXED_WEATHERED_COPPER_VACUUM)
 				.put(ModBlocks.OXIDIZED_COPPER_VACUUM, ModBlocks.WAXED_OXIDIZED_COPPER_VACUUM)
+
+				.put(ModBlocks.COPPER_DOOR, ModBlocks.WAXED_COPPER_DOOR)
+				.put(ModBlocks.EXPOSED_COPPER_DOOR, ModBlocks.WAXED_EXPOSED_COPPER_DOOR)
+				.put(ModBlocks.WEATHERED_COPPER_DOOR, ModBlocks.WAXED_WEATHERED_COPPER_DOOR)
+				.put(ModBlocks.OXIDIZED_COPPER_DOOR, ModBlocks.WAXED_OXIDIZED_COPPER_DOOR)
+
+				.put(ModBlocks.COPPER_TRAPDOOR, ModBlocks.WAXED_COPPER_TRAPDOOR)
+				.put(ModBlocks.EXPOSED_COPPER_TRAPDOOR, ModBlocks.WAXED_EXPOSED_COPPER_TRAPDOOR)
+				.put(ModBlocks.WEATHERED_COPPER_TRAPDOOR, ModBlocks.WAXED_WEATHERED_COPPER_TRAPDOOR)
+				.put(ModBlocks.OXIDIZED_COPPER_TRAPDOOR, ModBlocks.WAXED_OXIDIZED_COPPER_TRAPDOOR)
+				
 				.build();
 	});
 	Supplier<BiMap<Block, Block>> WAXED_TO_UNWAXED_BLOCKS = Suppliers.memoize(() -> {

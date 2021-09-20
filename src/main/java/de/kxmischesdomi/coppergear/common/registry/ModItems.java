@@ -6,6 +6,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.Settings;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.TallBlockItem;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -19,6 +20,8 @@ public class ModItems {
 
 	public static Item COPPER_GEAR_ITEM = register("copper_gear", new BlockItem(ModBlocks.COPPER_GEAR, new Settings().group(GROUP)));
 	
+	
+	// COPPER PIPE
 	public static Item COPPER_PIPE_ITEM = register("copper_pipe", new BlockItem(ModBlocks.COPPER_PIPE, new Settings().group(GROUP)));
 	public static Item EXPOSED_COPPER_PIPE_ITEM = register("exposed_copper_pipe", new BlockItem(ModBlocks.EXPOSED_COPPER_PIPE, new Settings().group(GROUP)));
 	public static Item WEATHERED_COPPER_PIPE_ITEM = register("weathered_copper_pipe", new BlockItem(ModBlocks.WEATHERED_COPPER_PIPE, new Settings().group(GROUP)));
@@ -29,6 +32,8 @@ public class ModItems {
 	public static Item WAXED_WEATHERED_COPPER_PIPE_ITEM = register("waxed_weathered_copper_pipe", new BlockItem(ModBlocks.WAXED_WEATHERED_COPPER_PIPE, new Settings().group(GROUP)));
 	public static Item WAXED_OXIDIZED_COPPER_PIPE_ITEM = register("waxed_oxidized_copper_pipe", new BlockItem(ModBlocks.WAXED_OXIDIZED_COPPER_PIPE, new Settings().group(GROUP)));
 
+	
+	// COPPER VACUUM
 	public static Item COPPER_VACUUM_ITEM = register("copper_vacuum", new BlockItem(ModBlocks.COPPER_VACUUM, new Settings().group(GROUP)));
 	public static Item EXPOSED_COPPER_VACUUM_ITEM = register("exposed_copper_vacuum", new BlockItem(ModBlocks.EXPOSED_COPPER_VACUUM, new Settings().group(GROUP)));
 	public static Item WEATHERED_COPPER_VACUUM_ITEM = register("weathered_copper_vacuum", new BlockItem(ModBlocks.WEATHERED_COPPER_VACUUM, new Settings().group(GROUP)));
@@ -39,7 +44,30 @@ public class ModItems {
 	public static Item WAXED_WEATHERED_COPPER_VACUUM_ITEM = register("waxed_weathered_copper_vacuum", new BlockItem(ModBlocks.WAXED_WEATHERED_COPPER_VACUUM, new Settings().group(GROUP)));
 	public static Item WAXED_OXIDIZED_COPPER_VACUUM_ITEM = register("waxed_oxidized_copper_vacuum", new BlockItem(ModBlocks.WAXED_OXIDIZED_COPPER_VACUUM, new Settings().group(GROUP)));
 
+	
+	// COPPER DOOR
+	public static Item COPPER_DOOR_ITEM = register("copper_door", new TallBlockItem(ModBlocks.COPPER_DOOR, new Settings().group(GROUP)));
+	public static Item EXPOSED_COPPER_DOOR_ITEM = register("exposed_copper_door", new TallBlockItem(ModBlocks.EXPOSED_COPPER_DOOR, new Settings().group(GROUP)));
+	public static Item WEATHERED_COPPER_DOOR_ITEM = register("weathered_copper_door", new TallBlockItem(ModBlocks.WEATHERED_COPPER_DOOR, new Settings().group(GROUP)));
+	public static Item OXIDIZED_COPPER_DOOR_ITEM = register("oxidized_copper_door", new TallBlockItem(ModBlocks.OXIDIZED_COPPER_DOOR, new Settings().group(GROUP)));
 
+	public static Item WAXED_COPPER_DOOR_ITEM = register("waxed_copper_door", new TallBlockItem(ModBlocks.WAXED_COPPER_DOOR, new Settings().group(GROUP)));
+	public static Item WAXED_EXPOSED_COPPER_DOOR_ITEM = register("waxed_exposed_copper_door", new TallBlockItem(ModBlocks.WAXED_EXPOSED_COPPER_DOOR, new Settings().group(GROUP)));
+	public static Item WAXED_WEATHERED_COPPER_DOOR_ITEM = register("waxed_weathered_copper_door", new TallBlockItem(ModBlocks.WAXED_WEATHERED_COPPER_DOOR, new Settings().group(GROUP)));
+	public static Item WAXED_OXIDIZED_COPPER_DOOR_ITEM = register("waxed_oxidized_copper_door", new TallBlockItem(ModBlocks.WAXED_OXIDIZED_COPPER_DOOR, new Settings().group(GROUP)));
+
+
+	// COPPER VACUUM
+	public static Item COPPER_TRAPDOOR_ITEM = register("copper_trapdoor", new BlockItem(ModBlocks.COPPER_TRAPDOOR, new Settings().group(GROUP)));
+	public static Item EXPOSED_COPPER_TRAPDOOR_ITEM = register("exposed_copper_trapdoor", new BlockItem(ModBlocks.EXPOSED_COPPER_TRAPDOOR, new Settings().group(GROUP)));
+	public static Item WEATHERED_COPPER_TRAPDOOR_ITEM = register("weathered_copper_trapdoor", new BlockItem(ModBlocks.WEATHERED_COPPER_TRAPDOOR, new Settings().group(GROUP)));
+	public static Item OXIDIZED_COPPER_TRAPDOOR_ITEM = register("oxidized_copper_trapdoor", new BlockItem(ModBlocks.OXIDIZED_COPPER_TRAPDOOR, new Settings().group(GROUP)));
+
+	public static Item WAXED_COPPER_TRAPDOOR_ITEM = register("waxed_copper_trapdoor", new BlockItem(ModBlocks.WAXED_COPPER_TRAPDOOR, new Settings().group(GROUP)));
+	public static Item WAXED_EXPOSED_COPPER_TRAPDOOR_ITEM = register("waxed_exposed_copper_trapdoor", new BlockItem(ModBlocks.WAXED_EXPOSED_COPPER_TRAPDOOR, new Settings().group(GROUP)));
+	public static Item WAXED_WEATHERED_COPPER_TRAPDOOR_ITEM = register("waxed_weathered_copper_trapdoor", new BlockItem(ModBlocks.WAXED_WEATHERED_COPPER_TRAPDOOR, new Settings().group(GROUP)));
+	public static Item WAXED_OXIDIZED_COPPER_TRAPDOOR_ITEM = register("waxed_oxidized_copper_trapdoor", new BlockItem(ModBlocks.WAXED_OXIDIZED_COPPER_TRAPDOOR, new Settings().group(GROUP)));
+	
 	public static void init() {}
 
 	public static <T extends Item> T register(String name, T item) {

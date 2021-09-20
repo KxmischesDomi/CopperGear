@@ -1,5 +1,4 @@
 {
-
   "itemGroup.coppergear.items": "Copper Gear",
 
   "item.coppergear.copper_gear": "Copper Gear",
@@ -42,6 +41,43 @@
   "block.coppergear.waxed_copper_vacuum": "Waxed Copper Vacuum",
   "block.coppergear.waxed_exposed_copper_vacuum": "Waxed Exposed Copper Vacuum",
   "block.coppergear.waxed_weathered_copper_vacuum": "Waxed Weathered Copper Vacuum",
-  "block.coppergear.waxed_oxidized_copper_vacuum": "Waxed Oxidized Copper Vacuum"
-  
+  "block.coppergear.waxed_oxidized_copper_vacuum": "Waxed Oxidized Copper Vacuum",
+
+
+  "item.coppergear.copper_door": "Copper Door",
+  "item.coppergear.exposed_copper_door": "Exposed Copper Door",
+  "item.coppergear.weathered_copper_door": "Weathered Copper Door",
+  "item.coppergear.oxidized_copper_door": "Oxidized Copper Door",
+  "item.coppergear.waxed_copper_door": "Waxed Copper Door",
+  "item.coppergear.waxed_exposed_copper_door": "Waxed Exposed Copper Door",
+  "item.coppergear.waxed_weathered_copper_door": "Waxed Weathered Copper Door",
+  "item.coppergear.waxed_oxidized_copper_door": "Waxed Oxidized Copper Door",
+
+  "block.coppergear.copper_door": "Copper Door",
+  "block.coppergear.exposed_copper_door": "Exposed Copper Door",
+  "block.coppergear.weathered_copper_door": "Weathered Copper Door",
+  "block.coppergear.oxidized_copper_door": "Oxidized Copper Door",
+  "block.coppergear.waxed_copper_door": "Waxed Copper Door",
+  "block.coppergear.waxed_exposed_copper_door": "Waxed Exposed Copper Door",
+  "block.coppergear.waxed_weathered_copper_door": "Waxed Weathered Copper Door",
+  "block.coppergear.waxed_oxidized_copper_door": "Waxed Oxidized Copper Door",
+
+
+  "item.coppergear.copper_trapdoor": "Copper Trapdoor",
+  "item.coppergear.exposed_copper_trapdoor": "Exposed Copper Trapdoor",
+  "item.coppergear.weathered_copper_trapdoor": "Weathered Copper Trapdoor",
+  "item.coppergear.oxidized_copper_trapdoor": "Oxidized Copper Trapdoor",
+  "item.coppergear.waxed_copper_trapdoor": "Waxed Copper Trapdoor",
+  "item.coppergear.waxed_exposed_copper_trapdoor": "Waxed Exposed Copper Trapdoor",
+  "item.coppergear.waxed_weathered_copper_trapdoor": "Waxed Weathered Copper Trapdoor",
+  "item.coppergear.waxed_oxidized_copper_trapdoor": "Waxed Oxidized Copper Trapdoor",
+
+  "block.coppergear.copper_trapdoor": "Copper Trapdoor",
+  "block.coppergear.exposed_copper_trapdoor": "Exposed Copper Trapdoor",
+  "block.coppergear.weathered_copper_trapdoor": "Weathered Copper Trapdoor",
+  "block.coppergear.oxidized_copper_trapdoor": "Oxidized Copper Trapdoor",
+  "block.coppergear.waxed_copper_trapdoor": "Waxed Copper Trapdoor",
+  "block.coppergear.waxed_exposed_copper_trapdoor": "Waxed Exposed Copper Trapdoor",
+  "block.coppergear.waxed_weathered_copper_trapdoor": "Waxed Weathered Copper Trapdoor",
+  "block.coppergear.waxed_oxidized_copper_trapdoor": "Waxed Oxidized Copper Trapdoor"
 }
