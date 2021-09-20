@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "coppergear:item/weathered_copper_pipe"
+    "layer0": "coppergear:item/pipe/weathered_copper_pipe"
   }
 }

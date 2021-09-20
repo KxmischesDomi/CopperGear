@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/template_trapdoor_bottom",
   "textures": {
-    "texture": "minecraft:block/iron_trapdoor"
+    "texture": "coppergear:block/trapdoor/oxidized_copper_trapdoor"
   }
 }

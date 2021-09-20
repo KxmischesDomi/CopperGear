@@ -51,8 +51,10 @@ public class OxidizableDoorBlock extends DoorBlock implements CopperGearOxidizab
 	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
 		DoubleBlockHalf doubleBlockHalf = state.get(HALF);
 
-		if (neighborState.getBlock() instanceof OxidizableDoorBlock && !neighborState.isOf(this)) {
-			state = neighborState.with(HALF, neighborState.get(HALF) == DoubleBlockHalf.UPPER ? DoubleBlockHalf.LOWER : DoubleBlockHalf.UPPER);
+		if (direction == Direction.UP && doubleBlockHalf == DoubleBlockHalf.LOWER || direction == Direction.DOWN && doubleBlockHalf == DoubleBlockHalf.UPPER) {
+			if (neighborState.getBlock() instanceof OxidizableDoorBlock && !neighborState.isOf(this)) {
+				state = neighborState.with(HALF, neighborState.get(HALF) == DoubleBlockHalf.UPPER ? DoubleBlockHalf.LOWER : DoubleBlockHalf.UPPER);
+			}
 		}
 
 		if (direction.getAxis() == Direction.Axis.Y && doubleBlockHalf == DoubleBlockHalf.LOWER == (direction == Direction.UP)) {

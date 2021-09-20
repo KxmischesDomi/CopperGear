@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "coppergear:item/copper_vacuum"
+    "layer0": "coppergear:item/vacuum/copper_vacuum"
   }
 }
