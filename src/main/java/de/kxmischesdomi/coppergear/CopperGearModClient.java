@@ -5,6 +5,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.minecraft.block.Block;
 import net.minecraft.client.render.RenderLayer;
 
 /**
@@ -16,29 +17,36 @@ public class CopperGearModClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.COPPER_GEAR, RenderLayer.getCutout());
 
-		
-		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.COPPER_DOOR, RenderLayer.getCutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.EXPOSED_COPPER_DOOR, RenderLayer.getCutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WEATHERED_COPPER_DOOR, RenderLayer.getCutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.OXIDIZED_COPPER_DOOR, RenderLayer.getCutout());
+		initCutoutBlocks(
+				ModBlocks.COPPER_GEAR,
 
-		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WAXED_COPPER_DOOR, RenderLayer.getCutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WAXED_EXPOSED_COPPER_DOOR, RenderLayer.getCutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WAXED_WEATHERED_COPPER_DOOR, RenderLayer.getCutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WAXED_OXIDIZED_COPPER_DOOR, RenderLayer.getCutout());
 
-		
-		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.COPPER_TRAPDOOR, RenderLayer.getCutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.EXPOSED_COPPER_TRAPDOOR, RenderLayer.getCutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WEATHERED_COPPER_TRAPDOOR, RenderLayer.getCutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.OXIDIZED_COPPER_TRAPDOOR, RenderLayer.getCutout());
+				ModBlocks.COPPER_DOOR,
+				ModBlocks.EXPOSED_COPPER_DOOR,
+				ModBlocks.WEATHERED_COPPER_DOOR,
+				ModBlocks.OXIDIZED_COPPER_DOOR,
 
-		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WAXED_COPPER_TRAPDOOR, RenderLayer.getCutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WAXED_EXPOSED_COPPER_TRAPDOOR, RenderLayer.getCutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WAXED_WEATHERED_COPPER_TRAPDOOR, RenderLayer.getCutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WAXED_OXIDIZED_COPPER_TRAPDOOR, RenderLayer.getCutout());
+				ModBlocks.WAXED_COPPER_DOOR,
+				ModBlocks.WAXED_EXPOSED_COPPER_DOOR,
+				ModBlocks.WAXED_WEATHERED_COPPER_DOOR,
+				ModBlocks.WAXED_OXIDIZED_COPPER_DOOR,
+
+
+				ModBlocks.COPPER_TRAPDOOR,
+				ModBlocks.EXPOSED_COPPER_TRAPDOOR,
+				ModBlocks.WEATHERED_COPPER_TRAPDOOR,
+				ModBlocks.OXIDIZED_COPPER_TRAPDOOR,
+
+				ModBlocks.WAXED_COPPER_TRAPDOOR,
+				ModBlocks.WAXED_EXPOSED_COPPER_TRAPDOOR,
+				ModBlocks.WAXED_WEATHERED_COPPER_TRAPDOOR,
+				ModBlocks.WAXED_OXIDIZED_COPPER_TRAPDOOR
+		);
+	}
+
+	public void initCutoutBlocks(Block... blocks) {
+		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(), blocks);
 	}
 
 }
