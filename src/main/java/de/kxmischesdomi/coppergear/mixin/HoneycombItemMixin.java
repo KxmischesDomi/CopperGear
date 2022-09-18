@@ -1,8 +1,6 @@
 package de.kxmischesdomi.coppergear.mixin;
 
-import com.google.common.collect.BiMap;
 import de.kxmischesdomi.coppergear.common.blocks.CopperGearOxidizable;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.HoneycombItem;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,7 +19,7 @@ public class HoneycombItemMixin {
 
 	@Inject(method = "getWaxedState", at = @At("HEAD"), cancellable = true)
 	private static void onGetWaxedState(BlockState state, CallbackInfoReturnable<Optional<BlockState>> cir) {
-		Optional<BlockState> blockState = Optional.ofNullable((Block) ((BiMap) CopperGearOxidizable.UNWAXED_TO_WAXED_BLOCKS.get()).get(state.getBlock())).map((block) -> {
+		Optional<BlockState> blockState = Optional.ofNullable((CopperGearOxidizable.UNWAXED_TO_WAXED_BLOCKS).get(state.getBlock())).map((block) -> {
 			return block.getStateWithProperties(state);
 		});
 		if (blockState.isPresent()) {

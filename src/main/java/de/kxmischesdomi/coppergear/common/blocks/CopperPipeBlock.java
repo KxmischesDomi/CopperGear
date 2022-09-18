@@ -5,8 +5,9 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.block.entity.HopperBlockEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.pathing.NavigationType;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemPlacementContext;
@@ -23,6 +24,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -35,11 +37,13 @@ import java.util.stream.IntStream;
  * @author KxmischesDomi | https://github.com/kxmischesdomi
  * @since 1.0
  */
-public class CopperPipeBlock extends Block implements CopperGearOxidizable, CopperPipeConnectable {
+public class CopperPipeBlock extends Block implements CopperGearOxidizable, CopperPipeConnectable, Waterloggable {
 
 	public static final BooleanProperty BOTTOM;
 	public static final BooleanProperty TOP;
 	public static final BooleanProperty ENABLED;
+	public static final BooleanProperty WATERLOGGED;
+
 	public static final VoxelShape BOTH_SHAPE;
 	public static final VoxelShape NONE_SHAPE;
 	public static final VoxelShape TOP_SHAPE;
@@ -52,13 +56,12 @@ public class CopperPipeBlock extends Block implements CopperGearOxidizable, Copp
 		super(settings);
 		this.waxed = waxed;
 		this.oxidizationLevel = oxidizationLevel;
-		this.setDefaultState((this.stateManager.getDefaultState()).with(BOTTOM, false).with(TOP, false).with(ENABLED, true));
+		this.setDefaultState((this.stateManager.getDefaultState()).with(BOTTOM, false).with(TOP, false).with(ENABLED, true).with(WATERLOGGED, false));
 	}
 
 	@Override
 	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		this.tickDegradation(state, world, pos, random);
-		super.randomTick(state, world, pos, random);
 	}
 
 	public boolean hasRandomTicks(BlockState state) {
@@ -75,10 +78,15 @@ public class CopperPipeBlock extends Block implements CopperGearOxidizable, Copp
 	}
 
 	@Override
+	public boolean isEnabled(World world, BlockPos pos, BlockState state) {
+		return state.get(ENABLED);
+	}
+
+	@Override
 	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		world.getBlockTickScheduler().schedule(pos, this, 8);
 
-		if (!state.get(ENABLED) && state.get(BOTTOM)) {
+		if (!state.get(ENABLED) || state.get(BOTTOM)) {
 			return;
 		}
 
@@ -113,7 +121,8 @@ public class CopperPipeBlock extends Block implements CopperGearOxidizable, Copp
 
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		BlockState shape = getState(ctx.getWorld(), ctx.getBlockPos(), getDefaultState());
-		return shape.with(ENABLED, true);
+		FluidState fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
+		return shape.with(ENABLED, true).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
 	}
 
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
@@ -122,6 +131,19 @@ public class CopperPipeBlock extends Block implements CopperGearOxidizable, Copp
 
 	private void updateState(World world, BlockPos pos, BlockState state) {
 		world.setBlockState(pos, getState(world, pos, state));
+	}
+
+	public FluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
+	}
+
+	@Override
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+		if (state.get(WATERLOGGED)) {
+			world.getFluidTickScheduler().schedule(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+		}
+
+		return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
 	}
 
 	private BlockState getState(World world, BlockPos pos, BlockState state) {
@@ -149,7 +171,7 @@ public class CopperPipeBlock extends Block implements CopperGearOxidizable, Copp
 	}
 
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(BOTTOM, TOP, ENABLED);
+		builder.add(BOTTOM, TOP, ENABLED, WATERLOGGED);
 	}
 
 	public boolean canPathfindThrough(BlockState state, BlockView world, BlockPos pos, NavigationType type) {
@@ -258,13 +280,13 @@ public class CopperPipeBlock extends Block implements CopperGearOxidizable, Copp
 	public static void transportItem(World world, BlockPos pos, ItemStack itemStack, BiConsumer<BlockPos, Inventory> pipeOutput) {
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		if (block instanceof CopperPipeConnectable && ((CopperPipeConnectable) block).canConnectBottom()) {
+		if (block instanceof CopperPipeConnectable connectable && ((CopperPipeConnectable) block).canConnectBottom()) {
 			if (state.getEntries().containsKey(Properties.ENABLED) && !state.get(Properties.ENABLED)) {
 				return;
 			}
 
-			if (((CopperPipeConnectable) block).isEnabled(world, pos, state)) {
-				if (((CopperPipeConnectable) block).onItemPass(world, pos, state, itemStack)) {
+			if (connectable.isEnabled(world, pos, state)) {
+				if (connectable.onItemPass(world, pos, state, itemStack)) {
 					transportItem(world, pos.up(), itemStack, pipeOutput);
 				}
 			}
@@ -283,6 +305,7 @@ public class CopperPipeBlock extends Block implements CopperGearOxidizable, Copp
 		BOTTOM = Properties.BOTTOM;
 		TOP = BooleanProperty.of("top");
 		ENABLED = Properties.ENABLED;
+		WATERLOGGED = Properties.WATERLOGGED;
 
 		VoxelShape bottomPiece = Block.createCuboidShape(0, 0, 0, 16, 3, 16);
 		VoxelShape topPiece = Block.createCuboidShape(0, 13, 0, 16, 16, 16);

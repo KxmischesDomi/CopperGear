@@ -42,7 +42,7 @@ public class CopperGearBlock extends Block {
 	@Override
 	public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
 		int receiving = world.getReceivedRedstonePower(pos);
-		world.setBlockState(pos, state.with(POWER, receiving), NOTIFY_NEIGHBORS);
+		world.setBlockState(pos, state.with(POWER, receiving));
 	}
 
 	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
@@ -71,10 +71,10 @@ public class CopperGearBlock extends Block {
 	@Override
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
 		int receiving = world.getReceivedRedstonePower(pos);
-		Direction direction = Direction.fromVector(fromPos.subtract(pos));
-		int emitted = world.getEmittedRedstonePower(fromPos, direction);
+		world.setBlockState(pos, state.with(POWER, receiving));
+//		Direction direction = Direction.fromVector(fromPos.subtract(pos));
+//		int emitted = world.getEmittedRedstonePower(fromPos, direction);
 //		if (state.get(POWER) != receiving || (receiving > 0 && receiving > emitted)) {
-			world.setBlockState(pos, state.with(POWER, receiving), NOTIFY_NEIGHBORS);
 //		}
 
 	}
@@ -101,6 +101,12 @@ public class CopperGearBlock extends Block {
 //			if ((Boolean)state.get(WATERLOGGED)) {
 //				world.getFluidTickScheduler().schedule(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 //			}
+
+			if (world instanceof World world1) {
+				int receiving = world1.getReceivedRedstonePower(pos);
+				return state.with(POWER, receiving);
+			}
+
 
 			return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
 		}

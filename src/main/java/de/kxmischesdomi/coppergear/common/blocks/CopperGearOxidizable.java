@@ -1,15 +1,15 @@
 package de.kxmischesdomi.coppergear.common.blocks;
 
 import com.google.common.base.Suppliers;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.ImmutableBiMap;
-import de.kxmischesdomi.coppergear.common.registry.ModBlocks;
+import de.kxmischesdomi.coppergear.utils.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Oxidizable;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.function.Supplier;
@@ -20,68 +20,22 @@ import java.util.function.Supplier;
  */
 public interface CopperGearOxidizable extends Oxidizable {
 
-	Supplier<BiMap<Block, Block>> OXIDATION_LEVEL_INCREASES = Suppliers.memoize(() -> {
-		return ImmutableBiMap.<Block, Block>builder()
+	Map<Block, Block> OXIDATION_LEVEL_INCREASES = new HashMap<>();
 
-				.put(ModBlocks.COPPER_PIPE, ModBlocks.EXPOSED_COPPER_PIPE)
-				.put(ModBlocks.EXPOSED_COPPER_PIPE, ModBlocks.WEATHERED_COPPER_PIPE)
-				.put(ModBlocks.WEATHERED_COPPER_PIPE, ModBlocks.OXIDIZED_COPPER_PIPE)
+	Supplier<Map<Block, Block>> OXIDATION_LEVEL_DECREASES = () -> Utils.inverseMap(OXIDATION_LEVEL_INCREASES);
 
-				.put(ModBlocks.COPPER_VACUUM, ModBlocks.EXPOSED_COPPER_VACUUM)
-				.put(ModBlocks.EXPOSED_COPPER_VACUUM, ModBlocks.WEATHERED_COPPER_VACUUM)
-				.put(ModBlocks.WEATHERED_COPPER_VACUUM, ModBlocks.OXIDIZED_COPPER_VACUUM)
+	Map<Block, Block> UNWAXED_TO_WAXED_BLOCKS = new HashMap<>();
 
-				.put(ModBlocks.COPPER_DOOR, ModBlocks.EXPOSED_COPPER_DOOR)
-				.put(ModBlocks.EXPOSED_COPPER_DOOR, ModBlocks.WEATHERED_COPPER_DOOR)
-				.put(ModBlocks.WEATHERED_COPPER_DOOR, ModBlocks.OXIDIZED_COPPER_DOOR)
-
-				.put(ModBlocks.COPPER_TRAPDOOR, ModBlocks.EXPOSED_COPPER_TRAPDOOR)
-				.put(ModBlocks.EXPOSED_COPPER_TRAPDOOR, ModBlocks.WEATHERED_COPPER_TRAPDOOR)
-				.put(ModBlocks.WEATHERED_COPPER_TRAPDOOR, ModBlocks.OXIDIZED_COPPER_TRAPDOOR)
-
-				.build();
-	});
-	Supplier<BiMap<Block, Block>> OXIDATION_LEVEL_DECREASES = Suppliers.memoize(() -> {
-		return ((BiMap)OXIDATION_LEVEL_INCREASES.get()).inverse();
-	});
-
-	Supplier<BiMap<Block, Block>> UNWAXED_TO_WAXED_BLOCKS = Suppliers.memoize(() -> {
-		return ImmutableBiMap.<Block, Block>builder()
-
-				.put(ModBlocks.COPPER_PIPE, ModBlocks.WAXED_COPPER_PIPE)
-				.put(ModBlocks.EXPOSED_COPPER_PIPE, ModBlocks.WAXED_EXPOSED_COPPER_PIPE)
-				.put(ModBlocks.WEATHERED_COPPER_PIPE, ModBlocks.WAXED_WEATHERED_COPPER_PIPE)
-				.put(ModBlocks.OXIDIZED_COPPER_PIPE, ModBlocks.WAXED_OXIDIZED_COPPER_PIPE)
-
-				.put(ModBlocks.COPPER_VACUUM, ModBlocks.WAXED_COPPER_VACUUM)
-				.put(ModBlocks.EXPOSED_COPPER_VACUUM, ModBlocks.WAXED_EXPOSED_COPPER_VACUUM)
-				.put(ModBlocks.WEATHERED_COPPER_VACUUM, ModBlocks.WAXED_WEATHERED_COPPER_VACUUM)
-				.put(ModBlocks.OXIDIZED_COPPER_VACUUM, ModBlocks.WAXED_OXIDIZED_COPPER_VACUUM)
-
-				.put(ModBlocks.COPPER_DOOR, ModBlocks.WAXED_COPPER_DOOR)
-				.put(ModBlocks.EXPOSED_COPPER_DOOR, ModBlocks.WAXED_EXPOSED_COPPER_DOOR)
-				.put(ModBlocks.WEATHERED_COPPER_DOOR, ModBlocks.WAXED_WEATHERED_COPPER_DOOR)
-				.put(ModBlocks.OXIDIZED_COPPER_DOOR, ModBlocks.WAXED_OXIDIZED_COPPER_DOOR)
-
-				.put(ModBlocks.COPPER_TRAPDOOR, ModBlocks.WAXED_COPPER_TRAPDOOR)
-				.put(ModBlocks.EXPOSED_COPPER_TRAPDOOR, ModBlocks.WAXED_EXPOSED_COPPER_TRAPDOOR)
-				.put(ModBlocks.WEATHERED_COPPER_TRAPDOOR, ModBlocks.WAXED_WEATHERED_COPPER_TRAPDOOR)
-				.put(ModBlocks.OXIDIZED_COPPER_TRAPDOOR, ModBlocks.WAXED_OXIDIZED_COPPER_TRAPDOOR)
-				
-				.build();
-	});
-	Supplier<BiMap<Block, Block>> WAXED_TO_UNWAXED_BLOCKS = Suppliers.memoize(() -> {
-		return ((BiMap)UNWAXED_TO_WAXED_BLOCKS.get()).inverse();
-	});
+	Supplier<Map<Block, Block>> WAXED_TO_UNWAXED_BLOCKS = Suppliers.memoize(() -> Utils.inverseMap(UNWAXED_TO_WAXED_BLOCKS));
 
 	static Optional<Block> getDecreasedOxidationBlock(Block block) {
-		return Optional.ofNullable((Block)((BiMap)OXIDATION_LEVEL_DECREASES.get()).get(block));
+		return Optional.ofNullable(OXIDATION_LEVEL_DECREASES.get().get(block));
 	}
 
 	static Block getUnaffectedOxidationBlock(Block block) {
 		Block block2 = block;
 
-		for(Block block3 = (Block)((BiMap)OXIDATION_LEVEL_DECREASES.get()).get(block); block3 != null; block3 = (Block)((BiMap)OXIDATION_LEVEL_DECREASES.get()).get(block3)) {
+		for(Block block3 = OXIDATION_LEVEL_DECREASES.get().get(block); block3 != null; block3 = OXIDATION_LEVEL_DECREASES.get().get(block3)) {
 			block2 = block3;
 		}
 
@@ -89,13 +43,11 @@ public interface CopperGearOxidizable extends Oxidizable {
 	}
 
 	static Optional<BlockState> getDecreasedOxidationState(BlockState state) {
-		return getDecreasedOxidationBlock(state.getBlock()).map((block) -> {
-			return block.getStateWithProperties(state);
-		});
+		return getDecreasedOxidationBlock(state.getBlock()).map((block) -> block.getStateWithProperties(state));
 	}
 
 	static Optional<Block> getIncreasedOxidationBlock(Block block) {
-		return Optional.ofNullable((Block)((BiMap)OXIDATION_LEVEL_INCREASES.get()).get(block));
+		return Optional.ofNullable((OXIDATION_LEVEL_INCREASES).get(block));
 	}
 
 	static BlockState getUnaffectedOxidationState(BlockState state) {
@@ -110,12 +62,9 @@ public interface CopperGearOxidizable extends Oxidizable {
 	}
 
 	default Optional<BlockState> getDegradationResult(BlockState state) {
-		return getIncreasedOxidationBlock(state.getBlock()).map((block) -> {
-			return block.getStateWithProperties(state);
-		});
+		return getIncreasedOxidationBlock(state.getBlock()).map((block) -> block.getStateWithProperties(state));
 	}
 
 	boolean isWaxed();
-
 
 }

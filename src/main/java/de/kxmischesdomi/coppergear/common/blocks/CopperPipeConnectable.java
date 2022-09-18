@@ -21,7 +21,9 @@ public interface CopperPipeConnectable {
 		return true;
 	}
 
-	default boolean isEnabled(World world, BlockPos pos, BlockState state) { return true; }
+	default boolean isEnabled(World world, BlockPos pos, BlockState state) {
+		return true;
+	}
 
 	/**
 	 * @return if the item should pass this pipe

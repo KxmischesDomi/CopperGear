@@ -1,6 +1,5 @@
 package de.kxmischesdomi.coppergear.mixin;
 
-import com.google.common.collect.BiMap;
 import de.kxmischesdomi.coppergear.common.blocks.CopperGearOxidizable;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Block;
@@ -23,7 +22,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Optional;
-import java.util.function.Consumer;
 
 /**
  * @author KxmischesDomi | https://github.com/kxmischesdomi
@@ -40,9 +38,7 @@ public class AxeItemMixin {
 		BlockState blockState = world.getBlockState(blockPos);
 
 		Optional<BlockState> optional2 = CopperGearOxidizable.getDecreasedOxidationState(blockState);
-		Optional<BlockState> optional3 = Optional.ofNullable((Block) ((BiMap) CopperGearOxidizable.WAXED_TO_UNWAXED_BLOCKS.get()).get(blockState.getBlock())).map((block) -> {
-			return block.getStateWithProperties(blockState);
-		});
+		Optional<BlockState> optional3 = Optional.ofNullable(CopperGearOxidizable.WAXED_TO_UNWAXED_BLOCKS.get().get(blockState.getBlock())).map((block) -> block.getStateWithProperties(blockState));
 		ItemStack itemStack = context.getStack();
 		Optional<BlockState> optional4 = Optional.empty();
 
@@ -63,9 +59,7 @@ public class AxeItemMixin {
 
 			world.setBlockState(blockPos, optional4.get(), Block.NOTIFY_ALL | Block.REDRAW_ON_MAIN_THREAD);
 			if (playerEntity != null) {
-				itemStack.damage(1, (LivingEntity) playerEntity, (Consumer) ((p) -> {
-					playerEntity.sendToolBreakStatus(context.getHand());
-				}));
+				itemStack.damage(1, (LivingEntity) playerEntity, (p) -> playerEntity.sendToolBreakStatus(context.getHand()));
 			}
 
 			cir.setReturnValue(ActionResult.success(world.isClient));

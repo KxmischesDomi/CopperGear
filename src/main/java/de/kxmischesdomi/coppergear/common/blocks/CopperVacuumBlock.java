@@ -3,9 +3,12 @@ package de.kxmischesdomi.coppergear.common.blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.block.Waterloggable;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.ai.pathing.NavigationType;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
@@ -16,11 +19,14 @@ import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -28,9 +34,10 @@ import java.util.Random;
  * @author KxmischesDomi | https://github.com/kxmischesdomi
  * @since 1.0
  */
-public class CopperVacuumBlock extends Block implements CopperGearOxidizable, CopperPipeConnectable {
+public class CopperVacuumBlock extends Block implements CopperGearOxidizable, CopperPipeConnectable, Waterloggable {
 
 	public static final BooleanProperty ENABLED;
+	public static final BooleanProperty WATERLOGGED;
 
 	private static final VoxelShape BOTTOM_SHAPE;
 	private static final VoxelShape MIDDLE_SHAPE;
@@ -44,7 +51,7 @@ public class CopperVacuumBlock extends Block implements CopperGearOxidizable, Co
 		super(settings);
 		this.oxidizationLevel = oxidizationLevel;
 		this.waxed = waxed;
-		this.setDefaultState((this.stateManager.getDefaultState()).with(ENABLED, true));
+		this.setDefaultState((this.stateManager.getDefaultState()).with(ENABLED, true).with(WATERLOGGED, false));
 	}
 
 	@Override
@@ -56,14 +63,17 @@ public class CopperVacuumBlock extends Block implements CopperGearOxidizable, Co
 		}
 
 		List<ItemEntity> entitiesInPullRange = world.getEntitiesByType(EntityType.ITEM, new Box(pos.getX() + 1, pos.getY(), pos.getZ() + 1, pos.getX(), pos.getY() - 0.5, pos.getZ()), itemEntity -> true);
+		Collections.shuffle(entitiesInPullRange);
 		for (ItemEntity itemEntity : entitiesInPullRange) {
-			ItemStack oldStack = itemEntity.getStack().copy();
-			CopperPipeBlock.transportItem(world, pos, itemEntity.getStack(), itemStack -> {
-				itemEntity.setStack(itemStack);
-				if (!oldStack.equals(itemStack)) {
+			ItemStack copy = itemEntity.getStack().copy();
+			copy.setCount(1);
+			CopperPipeBlock.transportItem(world, pos, copy, itemStack -> {
+				if (itemStack.isEmpty()) {
+					itemEntity.getStack().decrement(1);
 					world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.2F, (random.nextFloat() - random.nextFloat() * 0.2F + 1.0F) * 2.0F);
 				}
 			});
+			break;
 		}
 
 		for (int i = 0; i < 3; i++) {
@@ -91,7 +101,8 @@ public class CopperVacuumBlock extends Block implements CopperGearOxidizable, Co
 
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		BlockState shape = getState(ctx.getWorld(), ctx.getBlockPos(), getDefaultState());
-		return shape.with(ENABLED, true);
+		FluidState fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
+		return shape.with(ENABLED, true).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
 	}
 
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
@@ -100,6 +111,19 @@ public class CopperVacuumBlock extends Block implements CopperGearOxidizable, Co
 
 	private void updateState(World world, BlockPos pos, BlockState state) {
 		world.setBlockState(pos, getState(world, pos, state));
+	}
+
+	public FluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
+	}
+
+	@Override
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+		if (state.get(WATERLOGGED)) {
+			world.getFluidTickScheduler().schedule(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+		}
+
+		return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
 	}
 
 	private BlockState getState(World world, BlockPos pos, BlockState state) {
@@ -120,7 +144,6 @@ public class CopperVacuumBlock extends Block implements CopperGearOxidizable, Co
 	@Override
 	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		this.tickDegradation(state, world, pos, random);
-		super.randomTick(state, world, pos, random);
 	}
 
 	public boolean hasRandomTicks(BlockState state) {
@@ -143,7 +166,7 @@ public class CopperVacuumBlock extends Block implements CopperGearOxidizable, Co
 	}
 
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(ENABLED);
+		builder.add(ENABLED, WATERLOGGED);
 	}
 
 	@Override
@@ -157,6 +180,7 @@ public class CopperVacuumBlock extends Block implements CopperGearOxidizable, Co
 		MIDDLE_SHAPE = Block.createCuboidShape(1, 6, 1, 15, 12, 15);
 		TOP_SHAPE = Block.createCuboidShape(2, 12, 2, 14, 16, 14);
 		COMBINED_SHAPE = VoxelShapes.union(TOP_SHAPE, BOTTOM_SHAPE, MIDDLE_SHAPE);
+		WATERLOGGED = Properties.WATERLOGGED;
 	}
 
 }
